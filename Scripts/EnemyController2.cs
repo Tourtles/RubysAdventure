@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class EnemyController : MonoBehaviour
+public class EnemyController2 : MonoBehaviour
 {
     public TextMeshProUGUI countText;
     public GameObject winTextObject;
@@ -106,11 +106,11 @@ public class EnemyController : MonoBehaviour
 
         smokeEffect.Stop();
 
-        if (!broken == false);
-        {
-            count = count + 4;
+        if (broken == false);
+            {
+                count = count + 1;
 
             SetCountText();
-        }
+            }
     }
 }

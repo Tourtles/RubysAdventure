@@ -10,6 +10,15 @@ public class RubyController : MonoBehaviour
     
     public GameObject projectilePrefab;
 
+    
+    public Transform DamageEffect;
+
+    public AudioClip hitSound;
+
+    public AudioClip LoseSound;
+
+    public AudioClip WinSound;
+
     public int health { get { return currentHealth; }} 
     int currentHealth;
 
@@ -35,6 +44,15 @@ public class RubyController : MonoBehaviour
         currentHealth = maxHealth;
 
         audioSource = GetComponent<AudioSource>(); 
+
+        DamageEffect.GetComponent<ParticleSystem> ().enableEmission = false;
+    }
+
+    IEnumerator atopDamageEffect()
+    {
+        yield return new WaitForSeconds (.4f);
+
+        DamageEffect.GetComponent<ParticleSystem> ().enableEmission = false;
     }
 
     public void PlaySound(AudioClip clip)
@@ -106,11 +124,29 @@ public class RubyController : MonoBehaviour
 
             isInvincible = true;
             invincibleTimer = timeInvincible;
+            DamageEffect.GetComponent<ParticleSystem> ().enableEmission = true;
+            StartCoroutine (atopDamageEffect ());
+            PlaySound(hitSound);
         }
 
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         
         UIHealthBar.instance.SetValue(currentHealth / (float)maxHealth);
+
+        if (amount == 0)
+        {
+            PlaySound(LoseSound);
+        }
+
+        if (amount == 4)
+        {
+            PlaySound(WinSound);
+        }
+    }
+
+    public void ChangeScore(int amount)
+    {
+
     }
 
     void Launch()
